@@ -102,3 +102,39 @@ END //
 DELIMITER ;
 
 ```
+
+# *___________________________________________________________________________*
+### Crie uma view que mostre os livros disponíveis para empréstimo, excluindo aqueles que já foram emprestados.
+```SQL
+CREATE VIEW LivrosDisponiveis AS
+SELECT Livro.id_livro, livro.titulo, Livro.ISBN, Livro.AnoDePublicação, livro.estoque
+FROM Livro
+LEFT JOIN Emprestimos ON Livro.id_livro = Emprestimos.Emprestimos_id_Emprestimos
+WHERE (Emprestimos.id_Emprestimos IS NULL) OR (Emprestimos.status_emprest = 'Devolvido');
+
+```
+
+# *___________________________________________________________________________*
+### Implemente uma view que forneça uma lista de todos os empréstimos atuais, incluindo os detalhes dos livros emprestados e dos clientes.
+```SQL
+CREATE VIEW ListaEmprestimos AS
+SELECT
+    Emprestimos.id_Emprestimos,
+    Emprestimos.data_emprest,
+    Emprestimos.data_devo,
+    Emprestimos.status_emprest,
+    Cliente.id_Cliente,
+    Cliente.nome_cliente,
+    Cliente.cpf,
+    Cliente.data_de_nasc,
+    Cliente.endereco,
+    Livro.id_livro,
+    Livro.titulo AS titulo_livro,
+    Livro.ISBN,
+    Livro.AnoDePublicacao
+FROM
+    Emprestimos
+JOIN Cliente ON Emprestimos.Cliente_id_Cliente = Cliente.id_Cliente
+JOIN Livro ON Emprestimos.Emprestimos_id_Emprestimos = Livro.id_livro;
+
+```
