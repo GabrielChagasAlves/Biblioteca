@@ -10,3 +10,7 @@
 # *___________________________________________________________________________*
 ### Editoras: Mantenha detalhes sobre as editoras, como nome e endereço.
 ![image](https://github.com/GabrielChagasAlves/Biblioteca/assets/125607847/8eb4da0e-a849-4602-909a-8ab12beafc6e)
+
+# *___________________________________________________________________________*
+### Mantenha os dados dos clientes como nome, cpf, data de nascimento, endereço
+![image](https://github.com/GabrielChagasAlves/Biblioteca/assets/125607847/c2088b21-6907-4f7c-9445-a66fdd089d67)
