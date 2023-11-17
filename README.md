@@ -19,3 +19,86 @@
 ### Empréstimos: Controle os empréstimos de livros, incluindo a data de empréstimo e de devolução, bem como o status do empréstimo (pendente, devolvido, atrasado).
 ![image](https://github.com/GabrielChagasAlves/Biblioteca/assets/125607847/4a952c7e-19c1-48ce-8eec-745c70fad832)
 
+# *___________________________________________________________________________*
+### Crie uma stored procedure para registrar um novo empréstimo, verificando a disponibilidade do livro e atualizando o estoque.
+```SQL
+DELIMITER //
+
+CREATE PROCEDURE RegistrarEmprestimo(
+    IN livro_id INT UNSIGNED,
+    IN cliente_id INT UNSIGNED,
+    IN data_emprest DATE,
+    IN data_devo DATE
+)
+BEGIN
+    DECLARE disponibilidade INT;
+
+    -- Check book availability
+    SELECT estoque INTO disponibilidade FROM Livro WHERE id_livro = livro_id;
+
+    -- If the book is available, proceed with the loan registration
+    IF disponibilidade > 0 THEN
+        -- Update book stock
+        UPDATE Livro SET estoque = estoque - 1 WHERE id_livro = livro_id;
+
+        -- Register the loan
+        INSERT INTO Emprestimos (data_emprest, data_devo, status_emprest, Cliente_id_Cliente)
+        VALUES (data_emprest, data_devo, 'Pendente', cliente_id);
+
+        SELECT 'Empréstimo registrado com sucesso.' AS mensagem;
+
+    ELSE
+        -- If the book is not available, display a message
+        SELECT 'Livro não disponível no estoque. Empréstimo não registrado.' AS mensagem;
+    END IF;
+END //
+
+DELIMITER ;
+
+```
+
+# *___________________________________________________________________________*
+### Crie outra stored procedure para recuperar a lista de livros emprestados por um cliente específico.
+```SQL
+DELIMITER //
+
+CREATE PROCEDURE LivrosEmprestadosPorCliente(
+    IN cliente_id INT UNSIGNED
+)
+BEGIN
+    -- Retrieve the list of borrowed books for the specified client
+    SELECT Livro.titulo, Livro.ISBN, Emprestimos.data_emprest, Emprestimos.data_devo
+    FROM Livro
+    JOIN Emprestimos ON Livro.id_livro = Emprestimos.Emprestimos_id_Emprestimos
+    WHERE Emprestimos.Cliente_id_Cliente = cliente_id;
+
+END //
+
+DELIMITER ;
+
+```
+
+# *___________________________________________________________________________*
+### Implemente uma stored procedure que calcule multas para empréstimos atrasados.
+```SQL
+DELIMITER //
+
+CREATE PROCEDURE CalcularMultas()
+BEGIN
+    DECLARE multa_diaria DECIMAL(10, 2);
+    
+    -- Set the daily fine amount (adjust as needed)
+    SET multa_diaria = 5.00;
+
+    -- Update overdue loans with calculated fines
+    UPDATE Emprestimos
+    SET status_emprest = 'Atrasado',
+        multa = DATEDIFF(CURRENT_DATE, data_devo) * multa_diaria
+    WHERE data_devo < CURRENT_DATE AND status_emprest = 'Pendente';
+
+    SELECT 'Multas calculadas e atualizadas com sucesso.' AS mensagem;
+END //
+
+DELIMITER ;
+
+```
