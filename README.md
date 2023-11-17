@@ -14,3 +14,8 @@
 # *___________________________________________________________________________*
 ### Mantenha os dados dos clientes como nome, cpf, data de nascimento, endereço
 ![image](https://github.com/GabrielChagasAlves/Biblioteca/assets/125607847/c2088b21-6907-4f7c-9445-a66fdd089d67)
+
+# *___________________________________________________________________________*
+### Empréstimos: Controle os empréstimos de livros, incluindo a data de empréstimo e de devolução, bem como o status do empréstimo (pendente, devolvido, atrasado).
+![image](https://github.com/GabrielChagasAlves/Biblioteca/assets/125607847/4a952c7e-19c1-48ce-8eec-745c70fad832)
+
